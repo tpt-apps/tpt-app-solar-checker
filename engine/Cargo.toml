@@ -1,0 +1,17 @@
+[package]
+name = "tpt-solar-engine"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[features]
+default = []
+# Pro edition: PDF report export. The payback/financing/scenario math is
+# cheap and identical in both editions; only the report writer is compiled
+# out of the free WASM build to keep the payload small.
+pro = []
+
+[dependencies]
+tpt-nrg-solar = { path = "../../tpt-energy/crates/resource/tpt-nrg-solar" }
+tpt-nrg-lcoe = { path = "../../tpt-energy/crates/economics/tpt-nrg-lcoe" }
+chrono = "0.4"
