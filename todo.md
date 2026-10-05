@@ -73,9 +73,17 @@
       `wasm: { entry: '/apps/solar-checker/solar-checker.js' }`, status
       `coming-soon`) per the "Adding a finished app to the hub" runbook
 - [x] Free bundle shipped into the web repo (`public/apps/solar-checker/`)
+- [x] Hub verified in dev: `/tools` card renders, `/tools/solar-checker`
+      detail page loads the app through `WasmAppRunner`, Calculate runs
+      (8.8 yrs, same numbers as standalone). This surfaced and fixed a
+      latent hub bug: React StrictMode (dev) double-invokes the runner's
+      effect, and wasm-bindgen's non-reentrant init raced into TWO wasm
+      instances whose desynced memory views trapped on first use
+      ("memory access out of bounds"). `WasmAppRunner` now memoizes the
+      load+init promise per entry — benefits every hub app in dev;
+      production builds never double-invoke, so prod was never affected.
 - [ ] Flip registry `status` to `'live'` + set `price: '$9'` + `gumroadUrl`
       once the Gumroad product exists
-- [ ] Verify hub card/detail/runner in dev (`npm run dev`), then prod after
-      deploy
+- [ ] Verify hub in prod after deploy
 - [x] WASM size budget check: free 103.7 KB gz (256 KB raw), pro 117 KB gz
       (297 KB raw) — both well under the ~600 KB budget
